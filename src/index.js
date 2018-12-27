@@ -15,10 +15,14 @@ import '../node_modules/leaflet/dist/leaflet.css';
 
 var throttled = false;
 var delay = 250;
+// var lat = 52.0024612;
+// var lng = 4.3668409;
+// var zoom_level = 3;
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  loadMap();
+  loadMap(config.latProperty, config.lngProperty, config.zoomProperty);
+  // loadMap(lat,lng,zoom_level);
   loadOptionalConfigAndSettings();
   configureSlider();
 

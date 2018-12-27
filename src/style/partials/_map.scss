@@ -73,5 +73,19 @@
       margin-right: 8px;
       opacity: 0.7;
   }
+}
 
+.mapInfo {
+  position: absolute;
+  z-index: 1001;
+  left: 10px;
+  top: 140px; 
+  border: 2px solid rgba(0,0,0,0.2);
+  border-radius: 0.2rem;
+  width: 120px;
+}
+
+.mapInfoBox {
+  background-color: #fff;
+  padding: 2px;
 }

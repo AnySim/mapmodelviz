@@ -1,0 +1,218 @@
+Country,id
+American Samoa,False
+Australia,AUS
+Brunei Darussalam,False
+China,CHN
+Fiji,FJI
+Micronesia,False
+Guam,False
+Hong Kong SAR China,False
+Indonesia,IDN
+Japan,JPN
+Cambodia,KHM
+Kiribati,False
+Korea Republic,False
+Lao PDR,False
+Macao SAR China,False
+Marshall Islands,False
+Myanmar,MMR
+Mongolia,MNG
+Northern Mariana Islands,False
+Malaysia,MYS
+New Caledonia,NCL
+Nauru,False
+New Zealand,NZL
+Philippines,PHL
+Palau,False
+Papua New Guinea,PNG
+Korea Democractic Peoples Republic,False
+French Polynesia,False
+Singapore,False
+Solomon Islands,SLB
+Thailand,THA
+Timor Leste,False
+Tonga,False
+Tuvalu,False
+Vietnam,VNM
+Vanuatu,VUT
+Samoa,False
+Albania,ALB
+Andorra,False
+Armenia,ARM
+Austria,AUT
+Azerbaijan,AZE
+Belgium,BEL
+Bulgaria,BGR
+Bosnia and Herzegovina,BIH
+Belarus,BLR
+Switzerland,CHE
+Channel Islands,False
+Cyprus,CYP
+Czech Republic,CZE
+Germany,DEU
+Denmark,DNK
+Spain,ESP
+Estonia,EST
+Finland,FIN
+France,FRA
+Faroe Islands,False
+United Kingdom,GBR
+Georgia,GEO
+Gibraltar,False
+Greece,GRC
+Greenland,GRL
+Croatia,HRV
+Hungary,HUN
+Isle of Man,False
+Ireland,IRL
+Iceland,ISL
+Italy,ITA
+Kazakhstan,KAZ
+Kyrgyz Republic,False
+Liechtenstein,False
+Lithuania,LTU
+Luxembourg,LUX
+Latvia,LVA
+Monaco,False
+Moldova,MDA
+Macedonia FYR,False
+Montenegro,MNE
+Netherlands,NLD
+Norway,NOR
+Poland,POL
+Portugal,PRT
+Romania,ROU
+Russian Federation,False
+San Marino,False
+Serbia,False
+Slovak Republic,False
+Slovenia,SVN
+Sweden,SWE
+Tajikistan,TJK
+Turkmenistan,TKM
+Turkey,TUR
+Ukraine,UKR
+Uzbekistan,UZB
+Kosovo,CS-KM
+Aruba,False
+Argentina,ARG
+Antigua and Barbuda,False
+Bahamas The,False
+Belize,BLZ
+Bolivia,BOL
+Brazil,BRA
+Barbados,False
+Chile,CHL
+Colombia,COL
+Costa Rica,CRI
+Cuba,CUB
+Curacao,False
+Cayman Islands,False
+Dominica,False
+Dominican Republic,DOM
+Ecuador,ECU
+Grenada,False
+Guatemala,GTM
+Guyana,GUY
+Honduras,HND
+Haiti,HTI
+Jamaica,JAM
+St Kitts and Nevis,False
+St Lucia,False
+St Martin,False
+Mexico,MEX
+Nicaragua,NIC
+Panama,PAN
+Peru,PER
+Puerto Rico,PRI
+Paraguay,PRY
+El Salvador,SLV
+Suriname,SUR
+Sint Maarten,False
+Turks and Caicos Islands,False
+Trinidad and Tobago,TTO
+Uruguay,URY
+St Vincent and the Grenadines,False
+Venezuela,VEN
+British Virgin Islands,False
+Virgin Islands,False
+United Arab Emirates,ARE
+Bahrain,False
+Djibouti,DJI
+Algeria,DZA
+Egypt,EGY
+Iran,IRN
+Iraq,IRQ
+Israel,ISR
+Jordan,JOR
+Kuwait,KWT
+Lebanon,LBN
+Libya,LBY
+Morocco,MAR
+Malta,MLT
+Oman,OMN
+West Bank and Gaza,False
+Qatar,QAT
+Saudi Arabia,SAU
+Syrian Arab Republic,False
+Tunisia,TUN
+Yemen,YEM
+Bermuda,BMU
+Canada,CAN
+United States,False
+Afghanistan,AFG
+Bangladesh,BGD
+Bhutan,BTN
+India,IND
+Sri Lanka,LKA
+Maldives,False
+Nepal,NPL
+Pakistan,PAK
+Angola,AGO
+Burundi,BDI
+Benin,BEN
+Burkina Faso,BFA
+Botswana,BWA
+Central African Republic,CAF
+Cote d Ivoire,False
+Cameroon,CMR
+Congo Democratic Republic,False
+Congo Republic,False
+Comoros,False
+Cabo Verde,False
+Eritrea,ERI
+Ethiopia,ETH
+Gabon,GAB
+Ghana,GHA
+Guinea,GIN
+Gambia,GMB
+Guinea Bissau,GNB
+Equatorial Guinea,GNQ
+Kenya,KEN
+Liberia,LBR
+Lesotho,LSO
+Madagascar,MDG
+Mali,MLI
+Mozambique,MOZ
+Mauritania,MRT
+Mauritius,False
+Malawi,MWI
+Namibia,NAM
+Niger,NER
+Nigeria,NGA
+Rwanda,RWA
+Sudan,SDN
+Senegal,SEN
+Sierra Leone,SLE
+Somalia,SOM
+South Sudan,SSD
+Sao Tome and Principe,False
+Swaziland,SWZ
+Seychelles,False
+Chad,TCD
+Togo,TGO
+Tanzania,False
+Uganda,UGA
+South Africa,ZAF
+Zambia,ZMB
+Zimbabwe,ZWE

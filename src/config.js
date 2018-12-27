@@ -12,6 +12,10 @@ var modelConfig =  {
   timeSeries: [],
   currentIndex: 0,
 
+  latProperty: 52.0024612,
+  lngProperty: 4.3668409,
+  zoomProperty: 2,
+
   choropleth: null,
   choroplethDetails: {
     min: -Infinity,

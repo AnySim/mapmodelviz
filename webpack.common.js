@@ -16,7 +16,7 @@ module.exports = {
       { /* Javascript Babel */
         test: /\.js$/,
         include: path.resolve(__dirname, 'src'),
-        exclude: /node_modules/,
+        exclude: /node_modules/,        
         use: [{
           loader: 'babel-loader',
           options: {
@@ -25,7 +25,7 @@ module.exports = {
         }]
       },
       { /* HTML */
-        test: /\.(html)$/,
+        test: /\.(html)$/,        
         use: {
           loader: 'html-loader',
           options: {

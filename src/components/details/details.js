@@ -190,7 +190,7 @@ var displayCharts = function() {
       primary[key] = config.activePolicy.detailsDisplay[key];
     } else if (config.activePolicy.detailsDisplay[key]['value'] == 'secondary') {
       charted = true;
-      secondary[key] = config.activePolicy.detailsDisplay[key];;
+      secondary[key] = config.activePolicy.detailsDisplay[key];
     }
   }
 
@@ -201,6 +201,12 @@ var displayCharts = function() {
     $("[id=the-detail-charts]").hide();
     $("[id=no-charts-to-chart]").show();
   }
+  // var chartdata = [];
+  // chartdata = showPrimaryChart(primary);
+  // primaryCharts = buildCharts('primary', chartdata);
+  
+  // chartdata = showSecondaryCharts(secondary);
+  // secondaryCharts = buildCharts('secondary', chartdata);
   showPrimaryChart(primary);
   showSecondaryCharts(secondary);
 };
@@ -237,9 +243,10 @@ var getOptions = function(title, displayLegend, scaleType) {
     },
     legend: {
 			labels: {
-				usePointStyle: true
+				// usePointStyle: true
+        usePointStyle: false        
       },
-      display: displayLegend
+      display: displayLegend      
     },
     tooltips: {
       mode: 'index',
@@ -333,6 +340,7 @@ var showPrimaryChart = function(primary) {
     chartdiv.append(div);
   }
 
+  // return chartdata;
   primaryCharts = buildCharts('primary', chartdata);
 };
 var showSecondaryCharts = function(secondary) {
@@ -347,6 +355,11 @@ var showSecondaryCharts = function(secondary) {
     chartdiv.append(div);
   }
 
+  chartdata['options'].forEach(function(chart) {
+    chart.legend.display = false;
+  });
+
+  // return chartdata;
   secondaryCharts = buildCharts('secondary', chartdata);
 };
 var buildChartData = function(properties) {
@@ -368,7 +381,8 @@ var buildChartData = function(properties) {
       if (dataset[config.geoAreaId] === selectedFeature.properties[config.geoAreaId]) {
         for (var key in dataset) {
           if (key in properties && Array.isArray(dataset[key]) && dataset[key].length === config.timeSeries.length) {
-            var startingColorIdx = Math.floor((Math.random() * colors.length));
+            // var startingColorIdx = Math.floor((Math.random() * colors.length));
+            var startingColorIdx = 1;
             var dataVals = [getDataset(config.activePolicy.name,colors[startingColorIdx],dataset[key])];
 
             secondaryDatasets.forEach(function(secondset, index) {
@@ -376,6 +390,7 @@ var buildChartData = function(properties) {
                 var colorNum = (index+startingColorIdx+1) % colors.length;
                 var dataset = getDataset(secondset.name, colors[colorNum], secondset.data[i][key]);
                 dataset.borderDash = [5,10];
+                // dataset.borderDash = [5,5];
                 dataVals.push(dataset);
               }
             });

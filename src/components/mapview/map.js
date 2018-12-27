@@ -2,7 +2,7 @@ import * as util from '../../util/util.js';
 import * as details from '../details/details.js';
 import L from 'leaflet';
 import 'leaflet-easyprint';
-import { basemapLayer } from 'esri-leaflet';
+// import { basemapLayer } from 'esri-leaflet';
 
 var geoJSONLayer,
   selectedFeature = null,
@@ -65,13 +65,20 @@ var getFillColor = function(feature) {
   }
 };
 
-export function loadMap() {
+var mouse_lat, mouse_lng, map_zoom, map_center;
+
+export function loadMap(lat, lng, zoom) {
   // A new map here
   var map = L.map('map', {
     zoomSnap: 0.25
-  }).setView([52.0024612, 4.3668409], 7);
-  basemapLayer("Gray").addTo(map);
-  config.map = map;
+  }).setView([lat, lng], zoom);
+  // basemapLayer("Gray").addTo(map);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    // attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    // maxZoom: 18
+  }).addTo(map);
+  
+	config.map = map;
 
   L.easyPrint({
   	title: 'Print Map',
@@ -80,6 +87,52 @@ export function loadMap() {
     exportOnly: true,
     filename: 'mapmodelviz_choroplethMap'
   }).addTo(map);
+
+  
+  map.addEventListener('click', function(ev) {
+    mouse_lat = ev.latlng.lat;
+    mouse_lat = mouse_lat.toFixed(7);
+    mouse_lng = ev.latlng.lng;
+    mouse_lng = mouse_lng.toFixed(7);
+    map_zoom = map.getZoom();
+    // map_center = map.getCenter();
+    $(".mouseLat").text(mouse_lat);
+    $(".mouseLng").text(mouse_lng);
+    $(".mapZoom").text(map_zoom);
+  });
+  
+  $(".mouseLat").text(lat.toFixed(7));
+  $(".mouseLng").text(lng.toFixed(7));
+  $(".mapZoom").text(zoom);
+};
+
+export function updateMap() {
+  // Update map
+  config.map.setView([config.activePolicy.mapSettings.lat, config.activePolicy.mapSettings.lng], config.activePolicy.mapSettings.zoom);
+
+  var choropleth = findChoroplethNum(config.activePolicy.choroplethString);
+  if(choropleth <= 1) {
+    $("#run-playback").css("visibility","hidden");
+    $("#current-time").css("visibility","hidden");
+    $("#slider").css("visibility","hidden");
+    $(".info").css("visibility","hidden");
+  } else {
+    $("#run-playback").css("visibility","visible");
+    $("#current-time").css("visibility","visible");
+    $("#slider").css("visibility","visible");
+    $(".info").css("visibility","visible");
+  }
+
+  // basemapLayer("Gray").addTo(map);
+  // config.map = map;
+
+  // L.easyPrint({
+  // 	title: 'Print Map',
+  // 	// position: 'topleft',
+  // 	sizeModes: ['Current', 'A4Portrait', 'A4Landscape'],
+  //   exportOnly: true,
+  //   filename: 'mapmodelviz_choroplethMap'
+  // }).addTo(map);
 };
 
 export function updateMapData(throughPlayback=false) {
@@ -104,11 +157,22 @@ export function updateMapData(throughPlayback=false) {
     }
     util.setChoroplethBuckets();
     if (throughPlayback == false) {
-      buildChoroplethLegend();
-      displayPropertyTitle();
-      configureSlider();
-      configurePlayer();
+      var choropleth = findChoroplethNum(config.activePolicy.choroplethString);
+      if(choropleth > 1) {
+        buildChoroplethLegend();
+        displayPropertyTitle();
+        configureSlider();
+        configurePlayer();
+      // } else {
+      //   displayPropertyTitle();
+      }
     }
+    // if (throughPlayback == false) {
+    //   buildChoroplethLegend();
+    //   displayPropertyTitle();
+    //   configureSlider();
+    //   configurePlayer();
+    // }
     updateSlider();
   }
 
@@ -180,7 +244,7 @@ function updateGeoJSONLayer() {
         return choroStyle(feature);
       }
   });
-  config.map.fitBounds(geoJSONLayer.getBounds());
+  // config.map.fitBounds(geoJSONLayer.getBounds());
 };
 
 function getFeatureName() {
@@ -231,7 +295,7 @@ export function addGeoJSONLayer() {
       // geoJSONLayer.unbindTooltip();
     }
     config.map.addLayer(geoJSONLayer);
-    config.map.fitBounds(geoJSONLayer.getBounds());
+    // config.map.fitBounds(geoJSONLayer.getBounds());
     // map.setZoom(1);
     $('#loading-overlay').hide();
   }).fail(function(err) {
@@ -344,9 +408,11 @@ export function configureSlider() {
     currentTime.height('auto');
   } else {
     var currentTime = $("#current-time");
-    currentTime.css('width', 160);
+    // currentTime.css('width', 160);
+    currentTime.css('width', 120);
     currentTime.css('left', 10);
-    currentTime.css('bottom', 10 + 2 + 10);
+    // currentTime.css('bottom', 10 + 2 + 10);
+    currentTime.css('bottom', 54);
     currentTime.height('auto');
 
     var viewportWidth = $("[id=map-viewport]").width();
@@ -370,14 +436,20 @@ export function updateSlider() {
   if ($("[id=slider]").is(":visible") ) {
     document.getElementById('the-slider').value = config.timeSeries[config.currentIndex]
     $('#current-time-val').html(config.timeSeries[config.currentIndex]);
-    $("#playback-div").css('bottom', $( ".legend" ).outerHeight(true) + 5 + $("#current-time").outerHeight(true) + 5); // +10+2 is the padding and border for elements. +5 is margin between
+    var thelegend = $( ".legend" );
+    if(thelegend.length)
+    {
+      $("#playback-div").css('bottom', $( ".legend" ).outerHeight(true) + 5 + $("#current-time").outerHeight(true) + 5); // +10+2 is the padding and border for elements. +5 is margin between
+    } else {
+      $("#playback-div").css('bottom', 50 + 5 + $("#current-time").outerHeight(true) + 5); // +10+2 is the padding and border for elements. +5 is margin between
+    }
   }
 };
 
 var currentlyPlaying = false;
 var playerConfigured = false;
 var timer = null;
-function configurePlayer() {
+function configurePlayer() {  
   if (playerConfigured) {
     if (currentlyPlaying) {
       clearInterval(timer);   // stop the animation by clearing the interval
@@ -385,23 +457,44 @@ function configurePlayer() {
       currentlyPlaying = false;   // change the status again
     } else {
       var thelegend = $( ".legend" );
-      var currentTime = $("#current-time");
-      var playback = $("#playback-div");
-      console.log(currentTime.outerHeight(true))
-      playback.css('width', thelegend.outerWidth());
-      playback.css('left', thelegend.css('margin-left'));
-      playback.css('bottom', thelegend.outerHeight(true) + 5 + currentTime.outerHeight(true) + 5); // +10+2 is the padding and border for elements. +5 is margin between
+      if(thelegend.length)
+      {
+        var thelegend = $( ".legend" );
+        var currentTime = $("#current-time");
+        var playback = $("#playback-div");
+        // console.log(currentTime.outerHeight(true))
+        playback.css('width', thelegend.outerWidth());
+        playback.css('left', thelegend.css('margin-left'));
+        playback.css('bottom', thelegend.outerHeight(true) + 5 + currentTime.outerHeight(true) + 5); // +10+2 is the padding and border for elements. +5 is margin between
+      } else {
+        var currentTime = $("#current-time");
+        var playback = $("#playback-div");
+        // console.log(currentTime.outerWidth(true))
+        playback.css('width', currentTime.outerWidth());
+        playback.css('left', currentTime.css('left'));
+        playback.css('bottom', 0 + 5 + currentTime.outerHeight(true) + 5); // +10+2 is the padding and border for elements. +5 is margin between
+      }
       playback.show();
     }
   } else {
     showMapContent();
 
     var thelegend = $( ".legend" );
-    var currentTime = $("#current-time");
-    var playback = $("#playback-div");
-    playback.css('width', thelegend.outerWidth());
-    playback.css('left', thelegend.css('margin-left'));
-    playback.css('bottom', thelegend.outerHeight(true) + 5 + currentTime.outerHeight(true) + 5); // +10+2 is the padding and border for elements. +5 is margin between
+    if(thelegend.length)
+    {
+      var thelegend = $( ".legend" );
+      var currentTime = $("#current-time");
+      var playback = $("#playback-div");
+      playback.css('width', thelegend.outerWidth());
+      playback.css('left', thelegend.css('margin-left'));
+      playback.css('bottom', thelegend.outerHeight(true) + 5 + currentTime.outerHeight(true) + 5); // +10+2 is the padding and border for elements. +5 is margin between
+    } else {
+      var currentTime = $("#current-time");
+      var playback = $("#playback-div");
+      playback.css('width', currentTime.outerWidth());
+      playback.css('left', currentTime.css('left'));
+      playback.css('bottom', 0 + 5 + currentTime.outerHeight(true) + 5); // +10+2 is the padding and border for elements. +5 is margin between
+    }
     playback.show();
 
     $('#run-playback').on("click", function(event) {
@@ -446,4 +539,14 @@ var showMapContent = function(show=true) {
   } else {
     mapContent.hide()
   }
+}
+
+var findChoroplethNum = function(choroplethString) {
+  if (choroplethString && choroplethString != "") {
+    var bracket = choroplethString.indexOf("[")
+    var base = choroplethString.substring(0,bracket);
+    var numColors = parseInt(choroplethString.substring(bracket+1, bracket+2));
+    return numColors;
+  }
+  return 0;
 }

@@ -1,5 +1,6 @@
 const merge = require('webpack-merge');
-const common = require('./webpack.common.js');
+// const common = require('./webpack.common.js');
+const common = require('./webpack.main.js');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 

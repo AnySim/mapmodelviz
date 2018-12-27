@@ -1,6 +1,6 @@
 import choroplethColors from '../../util/colors.js';
 import { displayMessage } from '../../util/util.js';
-import { updateMapData, addGeoJSONLayer } from '../mapview/map.js';
+import { updateMap, updateMapData, addGeoJSONLayer } from '../mapview/map.js';
 import { loadDetails, updateFeatureDetails } from '../details/details.js';
 
 var policieshtml = require('./policies.html');
@@ -317,6 +317,25 @@ var newDataset = function() {
   $("#geo_id_property").val('');
   $("#mapped_property_name").val('');
   $("#geo_display_property").val('');
+  var current_lat = $(".mouseLat").text();
+  var current_lng = $(".mouseLng").text();
+  var current_zoom = $(".mapZoom").text();
+  if(current_lat.length){
+    $("#lat_property").val(current_lat);
+  } else {
+    $("#lat_property").val('');
+  }
+  if(current_lng.length){
+    $("#lng_property").val(current_lng);
+  } else {
+    $("#lng_property").val('');
+  }
+  if(current_zoom.length){
+    $("#zoom_property").val(current_zoom);
+  } else {
+    $("#zoom_property").val('');
+  }
+  
   $("#current-color-settings").html('');
 
   $("#scale_logarithmic").checked = false;
@@ -388,6 +407,9 @@ var viewDataset = function(row) {
   $("#geo_id_property").attr("disabled", "disabled");
   $("#mapped_property_name").attr("disabled", "disabled");
   $("#geo_display_property").attr("disabled", "disabled");
+  $("#lat_property").attr("disabled", "disabled");
+  $("#lng_property").attr("disabled", "disabled");
+  $("#zoom_property").attr("disabled", "disabled");
 
   $("#change-color-btn").hide();
   $('#current-color-settings-holder').removeClass('col-sm-6');
@@ -417,6 +439,9 @@ var loadModelDetails = function(dataToEdit) {
   $("#geo_id_property").val(openDataset.geoAreaId);
   $("#mapped_property_name").val(openDataset.mappedProperty);
   $("#geo_display_property").val(openDataset.geoJSON.text);
+  $("#lat_property").val(openDataset.mapSettings.lat);
+  $("#lng_property").val(openDataset.mapSettings.lng);
+  $("#zoom_property").val(openDataset.mapSettings.zoom);
 
   var choropleth = findChoropleth(openDataset.choroplethString);
   $("#current-color-settings").html(buildChoroplethDisplay(choropleth));
@@ -526,6 +551,18 @@ var saveModelDetails = function() {
     changed = true;
     openDataset.geoJSON.text = updatedDataset.geoJSON.text;
   }
+  if (openDataset.mapSettings.lat !== updatedDataset.mapSettings.lat) {
+    changed = true;
+    openDataset.mapSettings.lat = updatedDataset.mapSettings.lat;
+  }
+  if (openDataset.mapSettings.lng !== updatedDataset.mapSettings.lng) {
+    changed = true;
+    openDataset.mapSettings.lng = updatedDataset.mapSettings.lng;
+  }
+  if (openDataset.mapSettings.zoom !== updatedDataset.mapSettings.zoom) {
+    changed = true;
+    openDataset.mapSettings.zoom = updatedDataset.mapSettings.zoom;
+  }
 
   if (changed) {
     for (var i = 0; i < config.jsonData.length; i++) {
@@ -569,6 +606,11 @@ var buildDataset = function() {
     geoJSON: {
       file: $("#geojson-file-selector")[0].files[0],
       text: $("#geo_display_property").val(),
+    },
+    mapSettings: {
+      lat: parseFloat($("#lat_property").val()),
+      lng: parseFloat($("#lng_property").val()),
+      zoom: parseInt($("#zoom_property").val()),
     }
   };
 
@@ -637,6 +679,7 @@ var updateDatasetDisplay = function(clickedIndex, displayStatus, scaleChanged=fa
   });
 
   if (update) {
+    updateMap();
     loadModelData();
   }
 };
@@ -669,6 +712,9 @@ var loadModelData = function() {
   config.geoAreaId = config.activePolicy.geoAreaId;
   config.mappedProperty = config.activePolicy.mappedProperty;
   config.geoTextProperty = config.activePolicy.geoJSON.text;
+  config.latProperty = config.activePolicy.mapSettings.lat;
+  config.lngProperty = config.activePolicy.mapSettings.lng;
+  config.zoomProperty = config.activePolicy.mapSettings.zoom;
   config.choropleth = findChoropleth(config.activePolicy.choroplethString);
 
   var url = config.activePolicy.file.url;
